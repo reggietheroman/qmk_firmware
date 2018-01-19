@@ -9,16 +9,16 @@ extern keymap_config_t keymap_config;
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _QWERTY 0
-#define _COLEMAK 1
-#define _DVORAK 2
+#define _DVORAK 1
+#define _MACROS 2
 #define _LOWER 3
 #define _RAISE 4
 #define _ADJUST 16
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
-  COLEMAK,
   DVORAK,
+  MACROS,
   LOWER,
   RAISE,
   ADJUST,
@@ -32,95 +32,98 @@ enum custom_keycodes {
 #define ALT_TAB LALT(KC_TAB) //alt tab
 #define CSPD LCTL(LSFT(KC_PGUP)) //google sheet previous sheet
 #define CSND LCTL(LSFT(KC_PGDOWN)) //google sheet next sheet
-
+// undo, cut, copy, paste, redo, select all
+#define UNDO LCTL(KC_Z)
+#define CUT LCTL(KC_X)
+#define COPY LCTL(KC_C)
+#define PASTE LCTL(KC_V)
+#define REDO LCTL(KC_Y)
+#define SLCT_ALL LCTL(KC_A)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
- * ,-----------------------------------------------------------------------------------.
- * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Esc  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Adjust| Ctrl | GUI  | Alt  |Lower | Bksp |Space |Raise | Left | Down |  Up  |Right |
- * `-----------------------------------------------------------------------------------'
+ * ,-----------------------------------------.    ,-----------------------------------------.
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |    |   Y  |   U  |   I  |   O  |   P  | Bksp |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Esc  |   A  |   S  |   D  |   F  |   G  |    |   H  |   J  |   K  |   L  |   ;  |  "   |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |    |   N  |   M  |   ,  |   .  |   /  |Enter |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------| LCTL(KC_Y)
+ * |Adjust| Ctrl | GUI  | Alt  |Lower | Bksp |    |Space |Raise | Left | Down |  Up  |Right |
+ * `-----------------------------------------'    `-----------------------------------------'
  */
 [_QWERTY] = KEYMAP( \
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC, \
   KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT , \
-  ADJUST,  KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_BSPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+  ADJUST,  KC_LCTL, KC_LGUI, KC_LALT, LOWER,   KC_BSPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
 ),
-// alt and gui are different in the array because of some weirdnes whith my lets split. visual keymap is correct
-
-/* Colemak
- * ,-----------------------------------------------------------------------------------.
- * | Tab  |   Q  |   W  |   F  |   P  |   G  |   J  |   L  |   U  |   Y  |   ;  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Esc  |   A  |   R  |   S  |   T  |   D  |   H  |   N  |   E  |   I  |   O  |  "   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   K  |   M  |   ,  |   .  |   /  |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Adjust| Ctrl | GUI  | Alt  |Lower | Bksp |Space |Raise | Left | Down |  Up  |Right |
- * `-----------------------------------------------------------------------------------'
- */
-[_COLEMAK] = KEYMAP( \
-  KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC, \
-  KC_ESC,  KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT, \
-  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT , \
-  ADJUST,  KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_BSPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
-),
-// alt and gui are different in the array because of some weirdnes whith my lets split. visual keymap is correct
 
 /* Dvorak
- * ,-----------------------------------------------------------------------------------.
- * | Tab  |   "  |   ,  |   .  |   P  |   Y  |   F  |   G  |   C  |   R  |   L  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Esc  |   A  |   O  |   E  |   U  |   I  |   D  |   H  |   T  |   N  |   S  |  /   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   ;  |   Q  |   J  |   K  |   X  |   B  |   M  |   W  |   V  |   Z  |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Adjust| Ctrl | GUI  | Alt  |Lower | Bksp |Space |Raise | Left | Down |  Up  |Right |
- * `-----------------------------------------------------------------------------------'
+ * ,-----------------------------------------.    ,-----------------------------------------.
+ * | Tab  |   "  |   ,  |   .  |   P  |   Y  |    |   F  |   G  |   C  |   R  |   L  | Bksp |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Esc  |   A  |   O  |   E  |   U  |   I  |    |   D  |   H  |   T  |   N  |   S  |  /   |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Shift|   ;  |   Q  |   J  |   K  |   X  |    |   B  |   M  |   W  |   V  |   Z  |Enter |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |Adjust| Ctrl | GUI  | Alt  |Lower | Bksp |    |Space |Raise | Left | Down |  Up  |Right |
+ * `-----------------------------------------'    `-----------------------------------------'
  */
 [_DVORAK] = KEYMAP( \
   KC_TAB,  KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSPC, \
   KC_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_SLSH, \
   KC_LSFT, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_ENT , \
-  ADJUST,  KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_BSPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+  ADJUST,  KC_LCTL, KC_LGUI, KC_LALT, LOWER,   KC_BSPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
 ),
-// alt and gui are different in the array because of some weirdnes whith my lets split. visual keymap is correct
+
+/* Macros (also has a numpad on the RH side)
+ * ,-----------------------------------------.    ,-----------------------------------------.
+ * | Tab  |      |      |  Up  |      |Ctrl+Y|    |  /   |   7  |   8  |   9  |      | Bksp |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Esc  |Ctrl+A| Left | Down |Right |      |    |  *   |   4  |   5  |   6  |      |      |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |Ctrl+Z|Ctrl+X|Ctrl+C|Ctrl+V|      |    |  -   |   1  |   2  |   3  |      |Enter |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |Adjust|      |      |      |      | Bksp |    |Space |  +   |   0  |   .  |      |      |
+ * `-----------------------------------------'    `-----------------------------------------'
+ */
+[_MACROS] = KEYMAP( \
+  KC_TAB,  XXXXXXX,  XXXXXXX, KC_UP,   XXXXXXX,  REDO,    KC_SLSH, KC_7,    KC_8, KC_9,   XXXXXXX, KC_BSPC, \
+  KC_ESC,  SLCT_ALL, KC_LEFT, KC_DOWN, KC_RIGHT, XXXXXXX, KC_AMPR, KC_4,    KC_5, KC_6,   XXXXXXX, XXXXXXX, \
+  XXXXXXX, UNDO,     CUT,     COPY,    PASTE,    XXXXXXX, KC_MINS, KC_1,    KC_2, KC_3,   XXXXXXX, KC_ENT , \
+  ADJUST,  XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX , KC_BSPC, KC_SPC,  KC_PLUS, KC_0, KC_DOT, XXXXXXX, XXXXXXX  \
+),
 
 /* Lower
- * ,-----------------------------------------------------------------------------------.
- * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   _  |   +  |      |   \  |  |   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | |      |      |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      | Tab  |      | Next | Vol- | Vol+ | Play |
- * `-----------------------------------------------------------------------------------'
+ * ,-----------------------------------------.    ,-----------------------------------------.
+ * |   ~  |   !  |   @  |   #  |   $  |   %  |    |   ^  |   &  |   *  |   (  |   )  | Bksp |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |    |  F6  |   _  |   +  |      |   \  |  |   |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |  F7  |  F8  |  F9  |  F10 |  F11 |    |  F12 |ISO ~ |ISO | |      |      |Enter |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |    | Tab  |      | Next | Vol- | Vol+ | Play |
+ * `-----------------------------------------'    `-----------------------------------------'
  */
 [_LOWER] = KEYMAP( \
-  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC, \
-  KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
+  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN,   KC_RPRN, KC_BSPC, \
+  KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_UNDS, KC_PLUS, KC_LCBR,   KC_RCBR, KC_PIPE, \
   _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,S(KC_NUHS),S(KC_NUBS),_______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, KC_TAB, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
+  _______, _______, _______, _______, _______, _______, KC_TAB, _______, KC_MNXT, KC_VOLD,    KC_VOLU, KC_MPLY \
 ),
 
 /* Raise
- * ,-----------------------------------------------------------------------------------.
- * |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   -  |   =  |   [  |   ]  |  \   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO # |ISO / |      |      |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      | Tab  |      | Next | Vol- | Vol+ | Play |
- * `-----------------------------------------------------------------------------------'
+ * ,-----------------------------------------.    ,-----------------------------------------.
+ * |   `  |   1  |   2  |   3  |   4  |   5  |    |   6  |   7  |   8  |   9  |   0  | Bksp |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |    |  F6  |   -  |   =  |   [  |   ]  |  \   |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |  F7  |  F8  |  F9  |  F10 |  F11 |    |  F12 |ISO # |ISO / |      |      |Enter |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |    | Tab  |      | Next | Vol- | Vol+ | Play |
+ * `-----------------------------------------'    `-----------------------------------------'
  */
 [_RAISE] = KEYMAP( \
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC, \
@@ -130,21 +133,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 /* Adjust (Lower + Raise)
- * ,-----------------------------------------------------------------------------------.
- * |      | Reset|      |      |      |      |      |      |      |      |      |  Del |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |Alttab| CSPD | CSND |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
+ * ,-----------------------------------------.    ,-----------------------------------------.
+ * |      | Reset|      |AGnorm|AGswap|      |    |Macros|Qwerty|Dvorak|      |      |  Del |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |      |      |Aud on|Audoff|      |    | Left | Down |  Up  |Right |      |      |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |      | CSPD | CSND |      |      |    |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|    |------+------+------+------+------+------|
+ * |      |      |      |      |      |      |    |      |      |      |      |      |      |
+ * `-----------------------------------------'    `-----------------------------------------'
  */
 [_ADJUST] =  KEYMAP( \
-  _______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL, \
-  _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  _______, _______, \
-  _______, ALT_TAB, CSPD,    CSND,    _______, _______, _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+  _______, RESET,   _______, AG_NORM, AG_SWAP, _______, TG(_MACROS), QWERTY,  DVORAK,    _______,  _______, KC_DEL,  \
+  _______, _______, _______, AU_ON,   AU_OFF,  _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______, _______, \
+  _______, _______, CSPD,    CSND,    _______, _______, _______, _______, _______, _______,  _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______ \
 )
 
 
@@ -153,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef AUDIO_ENABLE
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
 float tone_dvorak[][2]     = SONG(DVORAK_SOUND);
-float tone_colemak[][2]    = SONG(COLEMAK_SOUND);
+float tone_colemak[][2]     = SONG(COLEMAK_SOUND);
 #endif
 
 void persistent_default_layer_set(uint16_t default_layer) {
@@ -169,15 +172,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           PLAY_SONG(tone_qwerty);
         #endif
         persistent_default_layer_set(1UL<<_QWERTY);
-      }
-      return false;
-      break;
-    case COLEMAK:
-      if (record->event.pressed) {
-        #ifdef AUDIO_ENABLE
-          PLAY_SONG(tone_colemak);
-        #endif
-        persistent_default_layer_set(1UL<<_COLEMAK);
       }
       return false;
       break;
